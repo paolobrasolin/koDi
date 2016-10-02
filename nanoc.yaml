@@ -88,3 +88,11 @@ checks:
     # E.g.:
     #   exclude_files: ['blog/page']
     exclude_files: []
+
+
+deploy:
+  default:
+    kind: git
+    remote: git@github.com:paolobrasolin/kodi.git
+    branch: gh-pages
+    forced: true

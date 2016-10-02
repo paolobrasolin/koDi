@@ -1,0 +1,48 @@
+  <button id="compile">Compile!</button>
+
+  <div id="display"></div>
+
+<div id="editor">Hello world.\par
+\LaTeX\ shoud be working \emph{fine}.</div>
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/chrome");
+    editor.getSession().setMode("ace/mode/latex");
+    editor.setOptions({
+      fontSize: 20
+    });
+</script>
+
+<script type="text/javascript">
+
+$('#compile').click(function() {
+
+  $('#display').html("Compiling..");
+
+  var longWaitTimerId = setTimeout(function () {
+    $('#display').html("Server asleep. Waking up the poor thing.");
+  }, 1500);
+
+  $.ajax({
+    method: 'POST',
+    url: 'https://texrhobot.herokuapp.com/svg',
+    // url: 'http://0.0.0.0:5000/svg',
+    data: {
+      "document": editor.getValue()
+    }
+  }).done(function(data) {
+    clearTimeout(longWaitTimerId);
+    var svg = $(data).find("svg");
+    console.log(svg.attr('height'));
+    $('#display').html(svg);
+  }).fail(function(err) {
+    console.log( err );
+  });
+
+
+});
+
+</script>

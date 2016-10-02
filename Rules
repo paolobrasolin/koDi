@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+passthrough '/fonts/*'
+
 compile '/**/*.html' do
   layout '/default.*'
 end
@@ -26,3 +28,5 @@ compile '/**/*' do
 end
 
 layout '/**/*', :erb
+
+

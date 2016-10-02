@@ -2,13 +2,76 @@
 title: Home
 ---
 
-<h1>A Brand New Nanoc Site</h1>
+<header>
+  <div class="title">ko<span class="d">D</span>i</div>
+  <div class="subtitle">kommutative Diagramme für
+    *<span class="tex">T<sub>e</sub>X</span>*
+  </div>
+</header>
 
-<p>You’ve just created a new Nanoc site. The page you are looking at right now is the home page for your site. To get started, consider replacing this default homepage with your own customized homepage. Some pointers on how to do so:</p>
 
-<ul>
-  <li><p><strong>Change this page’s content</strong> by editing the “index.html” file in the “content” directory. This is the actual page content, and therefore doesn’t include the header, sidebar or style information (those are part of the layout).</p></li>
-  <li><p><strong>Change the layout</strong>, which is the “default.html” file in the “layouts” directory, and create something unique (and hopefully less bland).</p></li>
-</ul>
+<div id="display"></div>
 
-<p>If you need any help with customizing your Nanoc web site, be sure to check out the documentation (see sidebar), and be sure to subscribe to the discussion group (also see sidebar). Enjoy!</p>
+<button id="compile">Compile!</button>
+
+<div id="editor">\begin{kodi}
+
+\lay[comb]{
+  |(P)| A \times_Z B & B \\
+        A            & Z \\
+};
+
+\obj at=($(Z)!2!(P)$), "Q";
+
+\mor[swap] P p_1:-> A f:-> Z;
+\mor       * P_2:-> B g:-> *;
+\mor[swap] Q q_1:l> A;
+\mor       * q_2:r> B;
+\mor[mid:dashed] * u:-> P;
+
+\end{kodi}</div>
+
+<script type="text/javascript">
+
+$('p').hyphenate('en-gb');
+
+var editor = ace.edit("editor");
+editor.setTheme("ace/theme/chrome");
+editor.getSession().setMode("ace/mode/latex");
+editor.setOptions({
+  fontSize: 20,
+  maxLines: 20,
+  minLines: 5
+});
+
+$('#compile').click(function() {
+
+  $('#display').html("Compiling..");
+
+  var longWaitTimerId = setTimeout(function () {
+    $('#display').html("Server asleep. Waking up the poor thing.");
+  }, 1500);
+
+  $.ajax({
+    method: 'POST',
+    url: 'https://texrhobot.herokuapp.com/svg',
+    // url: 'http://0.0.0.0:5000/svg',
+    data: {
+      "document": editor.getValue()
+    }
+  }).done(function(data) {
+    clearTimeout(longWaitTimerId);
+    var svg = $(data).find("svg");
+    var exHeight = parseFloat(svg.attr('height'))/parseFloat("4.30554pt")+"ex";
+    var exWidth = parseFloat(svg.attr('width'))/parseFloat("4.30554pt")+"ex";
+    svg.attr('height', exHeight);
+    svg.attr('width', exWidth);
+    $('#display').html(svg);
+  }).fail(function(err) {
+    console.log( err );
+  });
+
+
+});
+
+</script>
