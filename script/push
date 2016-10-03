@@ -9,7 +9,7 @@ SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 SHA=`git rev-parse --verify HEAD`
 
 # Now let's go have some fun with the cloned repo
-cd out
+cd output
 git config user.name "Travis CI"
 # git config user.email "$COMMIT_AUTHOR_EMAIL"
 git config user.email "paolo.brasolin@gmail.com"
