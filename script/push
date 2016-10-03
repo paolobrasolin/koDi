@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 SOURCE_BRANCH="nanoc"
 TARGET_BRANCH="gh-pages"
