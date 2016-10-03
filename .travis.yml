@@ -1,8 +1,7 @@
 language: ruby
 rvm:
   - 2.2.2
-before_script:
-  - "./script/clone"
+before_script: "./script/clone"
 script:
   - bundle exec nanoc
 before_deploy:
@@ -12,8 +11,7 @@ before_deploy:
   - eval "$(ssh-agent -s)"
   - ssh-add $TRAVIS_BUILD_DIR/deploy_rsa
   - rm $TRAVIS_BUILD_DIR/deploy_rsa
-deploy:
-  - "./script/push"
+deploy: "./script/push"
 branches:
   only:
     - nanoc
