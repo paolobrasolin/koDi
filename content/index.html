@@ -9,10 +9,15 @@ title: Home
   </div>
 </header>
 
+<div id="display">
+  <div class="diagram"></div>
+  <div class="loader">
+    <div class="loader-throbber"></div>
+    <div class="loader-message"></div>
+  </div>
+</div>
 
-<div id="display"></div>
-
-<button id="compile">Compile!</button>
+<button id="compile" class="hvr-bubble-bottom">Compile!</button>
 
 <div id="editor">\begin{kodi}
 
@@ -31,47 +36,6 @@ title: Home
 
 \end{kodi}</div>
 
-<script type="text/javascript">
-
-$('p').hyphenate('en-gb');
-
-var editor = ace.edit("editor");
-editor.setTheme("ace/theme/chrome");
-editor.getSession().setMode("ace/mode/latex");
-editor.setOptions({
-  fontSize: 20,
-  maxLines: 20,
-  minLines: 5
-});
-
-$('#compile').click(function() {
-
-  $('#display').html("Compiling..");
-
-  var longWaitTimerId = setTimeout(function () {
-    $('#display').html("Server asleep. Waking up the poor thing.");
-  }, 1500);
-
-  $.ajax({
-    method: 'POST',
-    url: 'https://texrhobot.herokuapp.com/svg',
-    // url: 'http://0.0.0.0:5000/svg',
-    data: {
-      "document": editor.getValue()
-    }
-  }).done(function(data) {
-    clearTimeout(longWaitTimerId);
-    var svg = $(data).find("svg");
-    var exHeight = parseFloat(svg.attr('height'))/parseFloat("4.30554pt")+"ex";
-    var exWidth = parseFloat(svg.attr('width'))/parseFloat("4.30554pt")+"ex";
-    svg.attr('height', exHeight);
-    svg.attr('width', exWidth);
-    $('#display').html(svg);
-  }).fail(function(err) {
-    console.log( err );
-  });
-
-
-});
-
+<script type="text/javascript" src="./js/live-demo.js">
 </script>
+
