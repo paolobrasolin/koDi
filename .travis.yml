@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-- 2.1.2
+  - 2.1.2
 before_script:
   - ./script/clone
 script:
@@ -16,5 +16,5 @@ deploy:
   - ./script/push
 branches:
   only:
-  - nanoc
+    - nanoc
 sudo: false
